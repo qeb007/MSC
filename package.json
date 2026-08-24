@@ -1,0 +1,12 @@
+{
+  "name": "msc-cloud-monitor",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --check monitor.mjs",
+    "monitor": "node monitor.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.55.0"
+  }
+}
