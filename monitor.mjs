@@ -1,7 +1,7 @@
 import { chromium } from "playwright";
 
 const TARGET_ID = "BE20270327TYOTYO";
-const THRESHOLD_EUR = 450;
+const THRESHOLD_EUR = 500;
 const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 const SEARCH_URL =
   "https://www.msccruises.be/fr/Search%20Result?area=FAE&departureDateFrom=01%2F03%2F2027&departureDateTo=31%2F03%2F2027&passengers=2%7C0%7C0%7C0&page=1";
