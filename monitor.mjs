@@ -1,6 +1,5 @@
 import { chromium } from "playwright";
 
-const THRESHOLD_EUR = 500;
 const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 const SEARCH_URL =
   "https://www.msccruises.be/fr/Search%20Result?area=FAE&departureDateFrom=01%2F03%2F2027&departureDateTo=31%2F03%2F2027&passengers=2%7C0%7C0%7C0&page=1";
@@ -8,6 +7,7 @@ const SEARCH_URL =
 const TARGETS = [
   {
     id: "BE20270327TYOTYO",
+    threshold: 500,
     day: 27,
     route: "東京往返",
     dateLabel: "2027/03/27–2027/04/01",
@@ -19,6 +19,7 @@ const TARGETS = [
   },
   {
     id: "BE20270323KEETYO",
+    threshold: 400,
     day: 23,
     route: "基隆→東京",
     dateLabel: "2027/03/23",
@@ -92,10 +93,10 @@ try {
     const price = extractBestPrice(targetText);
     if (price === null) {
       console.log(`${target.id}: sailing found but no best price was visible; no notification sent.`);
-    } else if (price < THRESHOLD_EUR) {
+    } else if (price < target.threshold) {
       const timestamp = new Date().toISOString();
       await sendTelegram(
-        `MSC 特價通知\nCruiseID: ${target.id}\n航程: ${target.route}\n日期: ${target.dateLabel}\n最低可見價: €${price.toLocaleString("de-DE")}／人\n條件: 低於 €${THRESHOLD_EUR}\n檢查時間: ${timestamp}\n來源: ${SEARCH_URL}`,
+        `MSC 特價通知\nCruiseID: ${target.id}\n航程: ${target.route}\n日期: ${target.dateLabel}\n最低可見價: €${price.toLocaleString("de-DE")}／人\n條件: 低於 €${target.threshold}\n檢查時間: ${timestamp}\n來源: ${SEARCH_URL}`,
       );
       console.log(`${target.id}: qualifying fare sent to Telegram: €${price}`);
     } else {
