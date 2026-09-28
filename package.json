@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "check": "node --check monitor.mjs",
-    "monitor": "node monitor.mjs"
+    "monitor": "node monitor.mjs",
+    "hotel-check": "node --check hotel-monitor.mjs",
+    "hotel-monitor": "node hotel-monitor.mjs"
   },
   "dependencies": {
     "playwright": "^1.55.0"
