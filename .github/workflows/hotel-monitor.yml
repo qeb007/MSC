@@ -2,8 +2,6 @@ name: Hotel availability monitor
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "*/20 * * * *"
 
 jobs:
   monitor:

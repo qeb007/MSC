@@ -25,7 +25,7 @@
 
 ## 飯店空房監控
 
-`.github/workflows/hotel-monitor.yml` 每 20 分鐘檢查アワーズイン阪急官方訂房頁：
+`.github/workflows/hotel-monitor.yml` 由外部 cron-job.org 每 20 分鐘觸發，檢查アワーズイン阪急官方訂房頁：
 
 - 入住：2027/03/26
 - 退房：2027/03/27（1 晚）
@@ -34,4 +34,4 @@
 
 只有官方結果頁顯示有可訂客房時，才會使用相同的 `TELEGRAM_BOT_TOKEN` 與 `TELEGRAM_CHAT_ID` secrets 發送通知；不會點擊預訂或輸入付款資料。
 
-另有 `.github/workflows/hotel-monitor-apr1.yml` 監控 2027/04/01–04/02，於每小時 `:10/:30/:50` 執行，與上述排程錯開 10 分鐘。
+另有 `.github/workflows/hotel-monitor-apr1.yml` 監控 2027/04/01–04/02，由第二個 cron-job.org 排程於每小時 `:10/:30/:50` 觸發，與上述排程錯開 10 分鐘。兩個 cron job 都應以 POST 呼叫 GitHub Actions workflow dispatch API。
