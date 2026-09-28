@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  monitor:
+  msc-monitor:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -16,5 +16,46 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run monitor
         env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+  hotel-mar26:
+    name: Hotel availability — 2027-03-26
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - run: npm run hotel-monitor
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+  hotel-apr1:
+    name: Hotel availability — 2027-04-01
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      # The shared cron-job.org dispatch happens every 20 minutes.  Delay this
+      # check so it alternates with the March check instead of running together.
+      - name: Stagger this check by 10 minutes
+        run: sleep 600
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - run: npm run hotel-monitor
+        env:
+          HOTEL_CHECKIN: "20270401"
+          HOTEL_CHECKOUT: "20270402"
+          HOTEL_DISPLAY_DATE_PATTERN: "4/1.*4/2"
+          HOTEL_DATE_LABEL: "2027/04/01–2027/04/02（1 晚）"
+          HOTEL_GUEST_LABEL: "2 位成人＋1 位小學生，1 間房"
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
