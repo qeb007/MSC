@@ -1,0 +1,27 @@
+name: Hotel availability monitor - April 1
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "10,30,50 * * * *"
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - run: npm run hotel-monitor
+        env:
+          HOTEL_CHECKIN: "20270401"
+          HOTEL_CHECKOUT: "20270402"
+          HOTEL_DISPLAY_DATE_PATTERN: "4/1.*4/2"
+          HOTEL_DATE_LABEL: "2027/04/01–2027/04/02（1 晚）"
+          HOTEL_GUEST_LABEL: "2 位成人＋1 位小學生，1 間房"
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}

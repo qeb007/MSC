@@ -33,3 +33,5 @@
 - 房間：1 間
 
 只有官方結果頁顯示有可訂客房時，才會使用相同的 `TELEGRAM_BOT_TOKEN` 與 `TELEGRAM_CHAT_ID` secrets 發送通知；不會點擊預訂或輸入付款資料。
+
+另有 `.github/workflows/hotel-monitor-apr1.yml` 監控 2027/04/01–04/02，於每小時 `:10/:30/:50` 執行，與上述排程錯開 10 分鐘。
